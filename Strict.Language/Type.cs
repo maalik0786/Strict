@@ -746,13 +746,13 @@ public class Type : Context
 			if (member.Type == this)
 				continue;
 			var subUnionType = member.Type.FindFirstUnionType(elseType);
-			if (subUnionType != null)
+			if (subUnionType is not null)
 				return subUnionType;
 		}
 		foreach (var otherMember in elseType.members)
 		{
 			var otherSubUnionType = otherMember.Type.FindFirstUnionType(this);
-			if (otherSubUnionType != null)
+			if (otherSubUnionType is not null)
 				return otherSubUnionType;
 		}
 		return null;

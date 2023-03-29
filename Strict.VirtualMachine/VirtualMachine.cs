@@ -16,18 +16,13 @@ public sealed class VirtualMachine
 
 	public VirtualMachine Execute(IList<Statement> allStatements)
 	{
-		Clear();
-		return RunStatements(allStatements);
-	}
-
-	private void Clear()
-	{
 		conditionFlag = false;
 		instructionIndex = 0;
 		statements.Clear();
 		Returns = null;
 		Memory.Registers.Clear();
 		Memory.Variables.Clear();
+		return RunStatements(allStatements);
 	}
 
 	private VirtualMachine RunStatements(IList<Statement> allStatements)
@@ -119,7 +114,7 @@ public sealed class VirtualMachine
 	private Instance GetVariableInstanceFromMemory(string variableIdentifier)
 	{
 		Memory.Variables.TryGetValue(variableIdentifier, out var methodCallInstance);
-		if (methodCallInstance == null)
+		if (methodCallInstance is null)
 			throw new VariableNotFoundInMemory();
 		return methodCallInstance;
 	}

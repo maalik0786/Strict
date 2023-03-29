@@ -173,16 +173,15 @@ public class MethodExpressionParser : ExpressionParser
 					continue;
 				}
 			}
-			var expression = input[members.Current].Contains('(')
-				? TryParseMemberOrZeroOrOneArgumentMethodOrNestedCall(body, input[members.Current])
-				: TryVariableOrValueOrParameterOrMemberOrMethodCall(context, current, body,
-					input[members.Current],
-					// arguments are only needed for the last part
-					members.IsAtEnd
-						? arguments
-						: Array.Empty<Expression>());
 			// ReSharper disable once UnthrowableException
-			current = expression ??
+			current = (input[members.Current].Contains('(')
+					? TryParseMemberOrZeroOrOneArgumentMethodOrNestedCall(body, input[members.Current])
+					: TryVariableOrValueOrParameterOrMemberOrMethodCall(context, current, body,
+						input[members.Current],
+						// arguments are only needed for the last part
+						members.IsAtEnd
+							? arguments
+							: Array.Empty<Expression>())) ??
 				throw CheckErrorTypeAndThrowException(body, input, members, current);
 			context = current.ReturnType;
 		}

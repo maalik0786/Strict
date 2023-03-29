@@ -25,7 +25,7 @@ public sealed class ByteCodeGenerator
 
 	public ByteCodeGenerator(MethodCall methodCall)
 	{
-		if (methodCall.Instance != null)
+		if (methodCall.Instance is not null)
 			AddInstanceMemberVariables((MethodCall)methodCall.Instance);
 		AddMethodParameterVariables(methodCall);
 		var methodBody = methodCall.Method.GetBodyAndParseIfNeeded();
@@ -39,7 +39,7 @@ public sealed class ByteCodeGenerator
 
 	private void AddMembersFromCaller(Instance instance)
 	{
-		if (instance.ReturnType != null)
+		if (instance.ReturnType is not null)
 			statements.Add(new StoreVariableStatement(instance,
 				instance.ReturnType.Members.First(member => !member.Type.IsTrait).Name));
 	}
@@ -250,7 +250,7 @@ public sealed class ByteCodeGenerator
 		GenerateCodeForIfCondition((Binary)ifExpression.Condition);
 		GenerateCodeForThen(ifExpression);
 		statements.Add(new JumpToIdStatement(Instruction.JumpEnd, idStack.Pop()));
-		if (ifExpression.OptionalElse == null)
+		if (ifExpression.OptionalElse is null)
 			return;
 		idStack.Push(conditionalId);
 		statements.Add(new JumpToIdStatement(Instruction.JumpToIdIfTrue, conditionalId++));
@@ -268,7 +268,7 @@ public sealed class ByteCodeGenerator
 
 	private void GenerateCodeForBinary(MethodCall binary)
 	{
-		if (binary.Method.Name != "is")
+		if (binary.Method.Name is not "is")
 			GenerateBinaryStatement(binary,
 				GetInstructionBasedOnBinaryOperationName(binary.Method.Name));
 	}
